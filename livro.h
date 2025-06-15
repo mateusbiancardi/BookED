@@ -26,6 +26,52 @@ Livro *inicializaLivro();
 int leLivroDoArquivo(Livro *l, FILE *arquivo);
 
 /**
+ * @brief Recupera o ID do Livro fornecido.
+ *
+ * @param l Ponteiro para uma estrutura Livro.
+ * @return int O ID do Livro.
+ */
+int getIdLivro(Livro *l);
+
+/**
+ * @brief Obtém o título de um livro.
+ *
+ * @param l Ponteiro para a estrutura Livro da qual se deseja obter o título.
+ * @return Ponteiro para a string (char*) contendo o título.
+ * @note O ponteiro retornado aponta para a memória interna da struct,
+ * não devendo ser modificado ou liberado pelo chamador.
+ */
+char *getTitulo(Livro *l);
+
+/**
+ * @brief Obtém o autor de um livro.
+ *
+ * @param l Ponteiro para a estrutura Livro da qual se deseja obter o autor.
+ * @return Ponteiro para a string (char*) contendo o nome do autor.
+ * @note O ponteiro retornado aponta para a memória interna da struct,
+ * não devendo ser modificado ou liberado pelo chamador.
+ */
+char *getAutor(Livro *l);
+
+/**
+ * @brief Obtém o gênero de um livro.
+ *
+ * @param l Ponteiro para a estrutura Livro da qual se deseja obter o gênero.
+ * @return Ponteiro para a string (char*) contendo o gênero do livro.
+ * @note O ponteiro retornado aponta para a memória interna da struct,
+ * não devendo ser modificado ou liberado pelo chamador.
+ */
+char *getGenero(Livro *l);
+
+/**
+ * @brief Obtém o ano de publicação de um livro.
+ *
+ * @param l Ponteiro para a estrutura Livro da qual se deseja obter o ano.
+ * @return O ano de publicação como um valor inteiro (int).
+ */
+int getAno(Livro *l);
+
+/**
  * @brief Libera a memória alocada para a estrutura Livro.
  *
  * @param l Ponteiro para a estrutura Livro a ser liberada.

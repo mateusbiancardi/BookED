@@ -27,6 +27,35 @@ Leitor *inicializaLeitor();
 int leLeitorDoArquivo(Leitor *l, FILE *arquivo);
 
 /**
+ * @brief Obtém o ID único de um leitor.
+ *
+ * @param l Ponteiro para a estrutura Leitor da qual se deseja obter o ID.
+ * @return O ID do leitor como um valor inteiro (int).
+ */
+int getIdLeitor(Leitor *l);
+
+/**
+ * @brief Obtém o nome de um leitor.
+ *
+ * @param l Ponteiro para a estrutura Leitor da qual se deseja obter o nome.
+ * @return Ponteiro para a string (char*) contendo o nome do leitor.
+ * @note O ponteiro retornado aponta para a memória interna da struct,
+ * não devendo ser modificado ou liberado pelo chamador.
+ */
+char *getNome(Leitor *l);
+
+/**
+ * @brief Obtém a lista de preferências de gênero de um leitor.
+ *
+ * @param l Ponteiro para a estrutura Leitor.
+ * @return Um ponteiro para o array de strings (char**) contendo as
+ * preferências.
+ * @note O ponteiro retornado e as strings contidas nele são gerenciados
+ * pela struct Leitor e não devem ser liberados pelo chamador.
+ */
+char **getPreferencias(Leitor *l);
+
+/**
  * @brief Libera a memória alocada para a estrutura Leitor.
  *
  * Esta função libera toda a memória previamente alocada para um ponteiro do

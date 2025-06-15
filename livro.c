@@ -24,8 +24,15 @@ int leLivroDoArquivo(Livro *l, FILE *arquivo) {
                 l->autor, l->genero, &l->ano);
 }
 
+int getId(Livro *l) { return l->id; }
+char *getTitulo(Livro *l) { return l->titulo; }
+char *getAutor(Livro *l) { return l->autor; }
+char *getGenero(Livro *l) { return l->genero; }
+int getAno(Livro *l) { return l->ano; }
+
 void liberaLivro(Livro *l) { free(l); };
 
+// Função de debug
 void imprimeLivro(Livro *l) {
   if (l == NULL)
     return;

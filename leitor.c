@@ -44,6 +44,10 @@ int leLeitorDoArquivo(Leitor *l, FILE *arquivo) {
   return 1;
 }
 
+int getIdLeitor(Leitor *l) { return l->id; };
+char *getNome(Leitor *l) { return l->nome; }
+char **getPreferencias(Leitor *l) { return l->prefencias; }
+
 void liberaLeitor(Leitor *l) {
   if (l == NULL)
     return;
@@ -55,6 +59,7 @@ void liberaLeitor(Leitor *l) {
   free(l);
 };
 
+// Função de debug
 void imprimeLeitor(Leitor *l) {
   if (l == NULL)
     return;
