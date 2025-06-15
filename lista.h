@@ -28,6 +28,22 @@ Lista *criaLista();
 void insereItemLista(Lista *l, void *item);
 
 /**
+ * @brief Busca um item na lista com base em uma chave e uma função de
+ * comparação.
+ * * A função percorre a lista e utiliza a função de comparação para encontrar
+ * uma correspondência. A lista não é modificada durante a operação.
+ *
+ * @param l Ponteiro para a lista onde a busca será realizada.
+ * @param id Ponteiro para uma chave de busca a ser passada para a função de
+ * comparação.
+ * @param c Ponteiro para a função de comparação. A função deve retornar 1
+ * (verdadeiro) em caso de correspondência e 0 (falso) caso contrário.
+ * @return Um ponteiro (void*) para o item encontrado, ou NULL se o item não
+ * estiver na lista.
+ */
+void *getItemLista(Lista *l, void *id, int (*c)(void *id, void *item));
+
+/**
  * @brief Remove um item da lista com base em uma chave de busca.
  *
  * A busca é realizada por uma função de comparação fornecida pelo usuário.

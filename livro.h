@@ -1,6 +1,7 @@
 #ifndef LIVRO_H_
 #define LIVRO_H_
 
+#include "lista.h"
 #include <stdio.h>
 typedef struct livro Livro;
 
@@ -70,6 +71,43 @@ char *getGenero(Livro *l);
  * @return O ano de publicação como um valor inteiro (int).
  */
 int getAno(Livro *l);
+
+/**
+ * @brief Busca um livro em uma lista pelo seu ID.
+ *
+ * Utiliza a função genérica de busca da lista, passando uma função de
+ * comparação específica para IDs de livros.
+ *
+ * @param lista Ponteiro para a lista de livros onde a busca será realizada.
+ * @param id O ID do livro a ser buscado.
+ * @return Livro* Ponteiro para o Livro encontrado, ou NULL se não existir na
+ * lista.
+ */
+Livro *getLivroListaById(Lista *lista, int id);
+
+/**
+ * @brief Remove um livro de uma lista com base no seu ID.
+ *
+ * @note Esta função remove a referência da lista (a célula), mas não libera
+ * a memória da estrutura `Livro` em si, que pode estar sendo usada em outras
+ * listas.
+ *
+ * @param lista Ponteiro para a lista de onde o livro será removido.
+ * @param id O ID do livro a ser removido.
+ * @return Livro* Ponteiro para o Livro que foi removido da lista.
+ */
+Livro *removeLivroLista(Lista *lista, int id);
+
+/**
+ * @brief Insere um livro no final de uma lista.
+ *
+ * Esta é uma função "wrapper" que simplifica a chamada para a função genérica
+ * de inserção da lista.
+ *
+ * @param lista Ponteiro para a lista onde o livro será inserido.
+ * @param livro Ponteiro para a estrutura `Livro` a ser inserida.
+ */
+void insereLivroLista(Lista *lista, Livro *livro);
 
 /**
  * @brief Libera a memória alocada para a estrutura Livro.

@@ -1,4 +1,5 @@
 #include "livro.h"
+#include "lista.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -29,6 +30,27 @@ char *getTitulo(Livro *l) { return l->titulo; }
 char *getAutor(Livro *l) { return l->autor; }
 char *getGenero(Livro *l) { return l->genero; }
 int getAno(Livro *l) { return l->ano; }
+
+// Funções envolvendo lista ----------------------------------------------
+int comparaIdLivro(void *idPtr, void *livroPtr) {
+  int id = *(int *)idPtr;
+  Livro *livro = (Livro *)livroPtr;
+  return id == livro->id;
+}
+
+Livro *getLivroListaById(Lista *lista, int id) {
+  return (Livro *)getItemLista(lista, &id, comparaIdLivro);
+}
+
+Livro *removeLivroLista(Lista *lista, int id) {
+  Livro *livro = removeItemLista(lista, &id, comparaIdLivro);
+  return livro;
+}
+
+void insereLivroLista(Lista *lista, Livro *livro) {
+  insereItemLista(lista, livro);
+}
+// ------------------------------------------------------------------------
 
 void liberaLivro(Livro *l) { free(l); };
 
