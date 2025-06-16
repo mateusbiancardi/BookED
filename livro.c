@@ -1,3 +1,10 @@
+/*
+ *
+ * Tad Livro
+ * Autores: Mateus Biancardi e Rafaela Capovilla
+ *
+ */
+
 #include "livro.h"
 #include "lista.h"
 #include <stdio.h>
@@ -25,7 +32,7 @@ int leLivroDoArquivo(Livro *l, FILE *arquivo) {
                 l->autor, l->genero, &l->ano);
 }
 
-int getId(Livro *l) { return l->id; }
+int getIdLivro(Livro *l) { return l->id; }
 char *getTitulo(Livro *l) { return l->titulo; }
 char *getAutor(Livro *l) { return l->autor; }
 char *getGenero(Livro *l) { return l->genero; }

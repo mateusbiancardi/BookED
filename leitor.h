@@ -1,3 +1,10 @@
+/*
+ *
+ * Tad Leitor
+ * Autores: Mateus Biancardi e Rafaela Capovilla
+ *
+ */
+
 #ifndef LEITOR_H_
 #define LEITOR_H_
 
