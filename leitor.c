@@ -90,6 +90,8 @@ Lista *getListaLivrosLidos(Leitor *l) { return l->livrosLidos; };
 Lista *getListaLivrosDesejados(Leitor *l) { return l->livrosDesejados; };
 
 Lista *getListaLivrosRecomendados(Leitor *l) { return l->livrosRecomendados; };
+
+Lista *getListaAfinidades(Leitor *l) { return l->afinidades; }
 // ------------------------------------------------------------------------
 
 void liberaLeitor(Leitor *l) {
