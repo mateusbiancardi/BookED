@@ -1,3 +1,10 @@
+/*
+ *
+ * Tad Leitor
+ * Autores: Mateus Biancardi e Rafaela Capovilla
+ *
+ */
+
 #ifndef LEITOR_H_
 #define LEITOR_H_
 
@@ -109,6 +116,14 @@ Lista *getListaLivrosDesejados(Leitor *l);
  * @return Lista* Ponteiro para a lista de livros recomendados.
  */
 Lista *getListaLivrosRecomendados(Leitor *l);
+
+/**
+ * @brief Retorna a lista de afinidades.
+ *
+ * @param l Ponteiro para o leitor.
+ * @return Lista* Ponteiro para a lista de afiniades.
+ */
+Lista *getListaAfinidades(Leitor *l);
 
 /**
  * @brief Libera a memória alocada para a estrutura Leitor.

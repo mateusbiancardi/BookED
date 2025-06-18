@@ -1,3 +1,10 @@
+/*
+ *
+ * Tad Livro
+ * Autores: Mateus Biancardi e Rafaela Capovilla
+ *
+ */
+
 #ifndef LIVRO_H_
 #define LIVRO_H_
 

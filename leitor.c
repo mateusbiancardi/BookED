@@ -1,3 +1,10 @@
+/*
+ *
+ * Tad Leitor
+ * Autores: Mateus Biancardi e Rafaela Capovilla
+ *
+ */
+
 #include "leitor.h"
 #include "lista.h"
 #include <stdio.h>
@@ -13,6 +20,7 @@ struct leitor {
   Lista *livrosDesejados;
   // Recomendação recebida
   Lista *livrosRecomendados;
+  Lista *afinidades;
 };
 
 Leitor *inicializaLeitor() {
@@ -24,6 +32,7 @@ Leitor *inicializaLeitor() {
   l->livrosLidos = criaLista();
   l->livrosDesejados = criaLista();
   l->livrosRecomendados = criaLista();
+  l->afinidades = criaLista();
 
   return l;
 };
@@ -81,6 +90,8 @@ Lista *getListaLivrosLidos(Leitor *l) { return l->livrosLidos; };
 Lista *getListaLivrosDesejados(Leitor *l) { return l->livrosDesejados; };
 
 Lista *getListaLivrosRecomendados(Leitor *l) { return l->livrosRecomendados; };
+
+Lista *getListaAfinidades(Leitor *l) { return l->afinidades; }
 // ------------------------------------------------------------------------
 
 void liberaLeitor(Leitor *l) {
@@ -96,6 +107,7 @@ void liberaLeitor(Leitor *l) {
   liberaLista(l->livrosLidos, NULL);
   liberaLista(l->livrosDesejados, NULL);
   liberaLista(l->livrosRecomendados, NULL);
+  liberaLista(l->afinidades, NULL);
   free(l);
 };
 
