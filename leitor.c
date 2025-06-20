@@ -124,6 +124,4 @@ void imprimeLeitor(Leitor *l) {
   }
 }
 
-int getNPreferencia(Leitor *l){
-  return l->nPreferencias;
-}
+int getNPreferencia(Leitor *l) { return l->nPreferencias; }

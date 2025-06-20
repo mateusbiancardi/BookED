@@ -125,7 +125,6 @@ Lista *getListaLivrosRecomendados(Leitor *l);
  */
 Lista *getListaAfinidades(Leitor *l);
 
-
 /**
  * @brief Retorna a quantidade de preferências.
  *.
