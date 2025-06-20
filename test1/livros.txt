@@ -1,0 +1,13 @@
+id;titulo;autor;genero;ano
+1;O Cortiço;Aluísio Azevedo;Terror;1890
+2;O Xangô de Baker Street;Jô Soares;Mistério;1995
+3;Senhora;José de Alencar;Romance;1875
+4;A Hora da Estrela;Clarice Lispector;Terror;1977
+5;O Caso da Estranha Fotografia;Marcos Rey;Mistério;1978
+6;Iracema;José de Alencar;Romance;1865
+7;Agosto;Rubem Fonseca;Mistério;1990
+8;A Moreninha;Joaquim Manuel de Macedo;Romance;1844
+9;Incidente em Antares;Erico Verissimo;Terror;1971
+10;A Grande Arte;Rubem Fonseca;Mistério;1983
+11;Os Sertões;Euclides da Cunha;História;1902
+12;Nós;Lauro Packer;Distopia;2016 

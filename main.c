@@ -1,25 +1,35 @@
 #include "funcionalidades.h"
 #include <stdio.h>
 
-
-int main() {
+// Para executar com args: ./main {nome_da_pasta}
+int main(int argc, char *argv[]) {
   printf("Iniciando o sistema BookED...\n");
 
   Funcionalidades *func = criaFuncionalidades();
 
   // pra saber se funcionou os arquivos de leitura de livro e leitor
-  printf("Carregando leitores...\n");
-  leArqLeitores(func, "leitores.txt");
-  printf("Carregando livros...\n");
-  leArqLivros(func, "livros.txt");
+  if (argc < 2) {
+    printf("Uso: %s <pasta_dos_arquivos>\n", argv[0]);
+    return 1;
+  }
 
-  // pra saber se funcionou até a rede de afinidades
+  char path_leitores[256], path_livros[256], path_comandos[256],
+      path_saida[256];
+  snprintf(path_leitores, sizeof(path_leitores), "%s/leitores.txt", argv[1]);
+  snprintf(path_livros, sizeof(path_livros), "%s/livros.txt", argv[1]);
+  snprintf(path_comandos, sizeof(path_comandos), "%s/comandos.txt", argv[1]);
+  snprintf(path_saida, sizeof(path_saida), "%s/saida_resultado.txt", argv[1]);
+
+  printf("Carregando leitores...\n");
+  leArqLeitores(func, path_leitores);
+  printf("Carregando livros...\n");
+  leArqLivros(func, path_livros);
+
   printf("Construindo rede de afinidades...\n");
   constroiAfinidades(func);
 
-  // pra saber se funcionou até gerar as saidas
-  printf("Processando comandos e gerando saida_resultado.txt...\n");
-  ProcessaArqComandos(func, "comandos.txt", "saida_resultado.txt");
+  printf("Processando comandos e gerando %s...\n", path_saida);
+  ProcessaArqComandos(func, path_comandos, path_saida);
 
   // saber se tudo rodou e liberar a memoria
   printf("Finalizando e liberando memoria...\n");

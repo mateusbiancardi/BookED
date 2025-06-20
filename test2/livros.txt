@@ -1,0 +1,16 @@
+id;titulo;autor;genero;ano
+1;Duna;Frank Herbert;Ficção Científica;1965
+2;Fundação;Isaac Asimov;Ficção Científica;1951
+3;Neuromancer;William Gibson;Tecnologia;1984
+4;Steve Jobs;Walter Isaacson;Biografia;2011
+5;Sapiens;Yuval Noah Harari;Ciência;2011
+6;Orgulho e Preconceito;Jane Austen;Romance;1813
+7;Como Eu Era Antes de Você;Jojo Moyes;Romance;2012
+8;Hamlet;William Shakespeare;Drama;1603
+9;A Morte do Caixeiro Viajante;Arthur Miller;Drama;1949
+10;Dom Casmurro;Machado de Assis;Literatura;1899
+11;O Iluminado;Stephen King;Terror;1977
+12;Drácula;Bram Stoker;Terror;1897
+13;Psicose;Robert Bloch;Suspense;1959
+14;A Garota no Trem;Paula Hawkins;Suspense;2015
+15;Einstein;Walter Isaacson;Biografia;2007 
