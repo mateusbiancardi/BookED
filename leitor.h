@@ -125,6 +125,16 @@ Lista *getListaLivrosRecomendados(Leitor *l);
  */
 Lista *getListaAfinidades(Leitor *l);
 
+
+/**
+ * @brief Retorna a quantidade de preferências.
+ *.
+ *
+ * @param l Ponteiro para a estrutura Leitor.
+ * @return Quantidade fr preferências de um leitor.
+ */
+int getNPreferencia(Leitor *l);
+
 /**
  * @brief Libera a memória alocada para a estrutura Leitor.
  *

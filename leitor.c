@@ -123,3 +123,7 @@ void imprimeLeitor(Leitor *l) {
     printf("Preferência %d: %s\n", i + 1, l->preferencias[i]);
   }
 }
+
+int getNPreferencia(Leitor *l){
+  return l->nPreferencias;
+}
