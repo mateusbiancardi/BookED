@@ -1,0 +1,105 @@
+Marcus leu "O Cortiço"
+Marcus leu "O Xangô de Baker Street"
+Marcus leu "Senhora"
+Lucius leu "A Hora da Estrela"
+Lucius leu "O Caso da Estranha Fotografia"
+Lucius leu "Iracema"
+Julia leu "Agosto"
+Julia leu "A Moreninha"
+Julia leu "Incidente em Antares"
+Gaius leu "A Grande Arte"
+Gaius leu "Os Sertões"
+Gaius leu "Nós"
+Claudia leu "O Cortiço"
+Claudia leu "O Xangô de Baker Street"
+Claudia leu "Senhora"
+Livia leu "A Hora da Estrela"
+Livia leu "O Caso da Estranha Fotografia"
+Existe afinidade entre Marcus e Gaius
+Existe afinidade entre Marcus e Lucius
+Existe afinidade entre Lucius e Julia
+Existe afinidade entre Julia e Claudia
+Existe afinidade entre Claudia e Livia
+Marcus deseja ler "Agosto"
+Marcus deseja ler "A Moreninha"
+Marcus deseja ler "Incidente em Antares"
+Lucius deseja ler "A Grande Arte"
+Lucius deseja ler "Os Sertões"
+Lucius deseja ler "Nós"
+Julia deseja ler "O Cortiço"
+Julia deseja ler "O Xangô de Baker Street"
+Gaius deseja ler "Agosto"
+Gaius deseja ler "A Moreninha"
+Claudia deseja ler "Incidente em Antares"
+Claudia deseja ler "A Grande Arte"
+Livia deseja ler "Os Sertões"
+Livia deseja ler "Nós"
+Livros em comum entre Marcus e Gaius: Nenhum livro em comum
+Livros em comum entre Marcus e Lucius: Nenhum livro em comum
+Livros em comum entre Lucius e Julia: Nenhum livro em comum
+Livros em comum entre Marcus e Claudia: O Cortiço, O Xangô de Baker Street, Senhora
+Marcus já leu "O Cortiço"
+Lucius já leu "A Hora da Estrela"
+Julia já leu "Agosto"
+Marcus já deseja ler "Agosto"
+Lucius já deseja ler "A Grande Arte"
+Julia já deseja ler "O Cortiço"
+Existe afinidade entre Marcus e Gaius
+Existe afinidade entre Lucius e Julia
+Marcus não pode recomendar livros para si mesmo
+Lucius recomenda "Senhora" para Gaius
+Lucius não precisa da recomendação de "Iracema" pois já leu este livro
+Marcus não possui recomendação do livro ID 4 feita por Marcus
+Gaius aceita recomendação "Senhora" de Lucius
+Lucius não possui recomendação do livro ID 6 feita por Claudia
+Lucius não precisa da recomendação de "A Hora da Estrela" pois já leu este livro
+Lucius não possui recomendação do livro ID 4 feita por Marcus
+Livros em comum entre Marcus e Gaius: Nenhum livro em comum
+Livros em comum entre Lucius e Julia: Nenhum livro em comum
+Livros em comum entre Claudia e Livia: Nenhum livro em comum
+Existe afinidade entre Marcus e Lucius
+Existe afinidade entre Julia e Claudia
+Existe afinidade entre Lucius e Julia
+Existe afinidade entre Claudia e Livia
+Existe afinidade entre Marcus e Livia
+Existe afinidade entre Marcus e Julia
+Existe afinidade entre Gaius e Claudia
+Existe afinidade entre Lucius e Livia
+Imprime toda a BookED
+
+Leitor: Marcus
+Lidos: O Cortiço, O Xangô de Baker Street, Senhora
+Desejados: Agosto, A Moreninha, Incidente em Antares
+Recomendacoes: 
+Afinidades: Lucius, Gaius
+
+Leitor: Lucius
+Lidos: A Hora da Estrela, O Caso da Estranha Fotografia, Iracema
+Desejados: A Grande Arte, Os Sertões, Nós
+Recomendacoes: 
+Afinidades: Marcus, Julia, Gaius, Claudia
+
+Leitor: Julia
+Lidos: Agosto, A Moreninha, Incidente em Antares
+Desejados: O Cortiço, O Xangô de Baker Street
+Recomendacoes: 
+Afinidades: Lucius, Claudia
+
+Leitor: Gaius
+Lidos: A Grande Arte, Os Sertões, Nós
+Desejados: Agosto, A Moreninha, Senhora
+Recomendacoes: 
+Afinidades: Marcus, Lucius
+
+Leitor: Claudia
+Lidos: O Cortiço, O Xangô de Baker Street, Senhora
+Desejados: Incidente em Antares, A Grande Arte
+Recomendacoes: 
+Afinidades: Lucius, Julia, Livia
+
+Leitor: Livia
+Lidos: A Hora da Estrela, O Caso da Estranha Fotografia
+Desejados: Os Sertões, Nós
+Recomendacoes: 
+Afinidades: Claudia
+

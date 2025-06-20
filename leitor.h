@@ -64,6 +64,22 @@ char *getNome(Leitor *l);
 char **getPreferencias(Leitor *l);
 
 /**
+ * @brief Compara um ID fornecido com o ID de uma estrutura Leitor.
+ *
+ * Esta função é destinada a ser usada como comparador, onde o primeiro
+ * parâmetro é um ponteiro para o ID (tipicamente um inteiro), e o segundo
+ * parâmetro é um ponteiro para a estrutura Leitor. A função compara o ID
+ * fornecido com o ID armazenado na estrutura Leitor.
+ *
+ * @param idPtr Ponteiro para o ID a ser comparado (por exemplo, int*).
+ * @param leitorPtr Ponteiro para a estrutura Leitor a ser comparada.
+ * @return int Retorna 0 se os IDs forem iguais, valor negativo se idPtr for
+ * menor que o ID do Leitor, ou valor positivo se idPtr for maior que o ID do
+ * Leitor.
+ */
+int comparaIdLeitor(void *idPtr, void *leitorPtr);
+
+/**
  * @brief Busca um leitor em uma lista pelo seu ID.
  *
  * @param lista Ponteiro para a lista de leitores.
@@ -72,6 +88,18 @@ char **getPreferencias(Leitor *l);
  * lista.
  */
 Leitor *getLeitorListaById(Lista *lista, int id);
+
+/**
+ * @brief Verifica se um leitor com o ID especificado existe na lista.
+ *
+ * Esta função percorre a lista fornecida e verifica se existe um leitor
+ * cujo identificador corresponde ao valor de 'id'.
+ *
+ * @param l Ponteiro para a lista de leitores.
+ * @param id Identificador do leitor a ser procurado.
+ * @return int Retorna 1 se o leitor existir na lista, caso contrário retorna 0.
+ */
+int verificaLeitorListaExiste(Lista *l, int id);
 
 /**
  * @brief Remove um leitor de uma lista com base no seu ID.

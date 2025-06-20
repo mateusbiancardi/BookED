@@ -93,6 +93,18 @@ int getAno(Livro *l);
 Livro *getLivroListaById(Lista *lista, int id);
 
 /**
+ * @brief Verifica se um livro com o ID especificado existe na lista.
+ *
+ * Esta função percorre a lista de livros e verifica se existe um livro
+ * cujo identificador corresponde ao valor fornecido.
+ *
+ * @param l Ponteiro para a lista de livros.
+ * @param id Identificador do livro a ser procurado.
+ * @return int Retorna 1 se o livro existir na lista, 0 caso contrário.
+ */
+int verificaLivroListaExiste(Lista *l, int id);
+
+/**
  * @brief Remove um livro de uma lista com base no seu ID.
  *
  * @note Esta função remove a referência da lista (a célula), mas não libera

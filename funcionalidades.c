@@ -9,6 +9,7 @@
 #include "funcionalidades.h"
 #include "leitor.h"
 #include "lista.h"
+#include "livro.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -144,6 +145,18 @@ static int temCaminhoAfinidade(Leitor *origem, Leitor *destino,
   return 0;
 }
 
+int verificaAfinidadeTransitiva(Leitor *origem, Leitor *destino) {
+  // Para cada nova verificação, criamos uma lista de "visitados" zerada.
+  Lista *visitados = criaLista();
+
+  // Chama a função de busca em profundidade (DFS) já criada.
+  int resultado = temCaminhoAfinidade(origem, destino, visitados);
+
+  liberaLista(visitados, NULL);
+
+  return resultado;
+}
+
 void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
                          const char *output_path) {
   FILE *f_in = fopen(commands_path, "r");
@@ -169,14 +182,29 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
     switch (id_func) {
     case 1: // ADICIONAR LIVRO LIDO
       if (leitor1 && livro) {
-        insereLivroLista(getListaLivrosLidos(leitor1), livro);
+        Lista *livrosLidos = getListaLivrosLidos(leitor1);
+        if (verificaLivroListaExiste(livrosLidos, getIdLivro(livro))) {
+          fprintf(f_out, "%s já leu \"%s\"\n", getNome(leitor1),
+                  getTitulo(livro));
+          break;
+        }
+
+        insereLivroLista(livrosLidos, livro);
         fprintf(f_out, "%s leu \"%s\"\n", getNome(leitor1), getTitulo(livro));
       }
       break;
 
     case 2: // ADICIONAR LIVRO DESEJADO
       if (leitor1 && livro) {
-        insereLivroLista(getListaLivrosDesejados(leitor1), livro);
+        Lista *livrosDesejados = getListaLivrosDesejados(leitor1);
+
+        if (verificaLivroListaExiste(livrosDesejados, getIdLivro(livro))) {
+          fprintf(f_out, "%s já deseja ler \"%s\"\n", getNome(leitor1),
+                  getTitulo(livro));
+          break;
+        }
+
+        insereLivroLista(livrosDesejados, livro);
         fprintf(f_out, "%s deseja ler \"%s\"\n", getNome(leitor1),
                 getTitulo(livro));
       }
@@ -184,7 +212,27 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
 
     case 3: // RECOMENDAR UM LIVRO
       if (leitor1 && livro && leitor2) {
-        insereLivroLista(getListaLivrosRecomendados(leitor2), livro);
+        Lista *livrosRecomendados = getListaLivrosRecomendados(leitor2);
+        Lista *livrosLidos = getListaLivrosLidos(leitor2);
+
+        if (verificaLivroListaExiste(livrosLidos, getIdLivro(livro))) {
+          fprintf(f_out,
+                  "%s não precisa da recomendação de \"%s\" pois já leu este "
+                  "livro\n",
+                  getNome(leitor2), getTitulo(livro));
+          break;
+        }
+
+        int idLeitor1 = getIdLeitor(leitor1);
+        int idLeitor2 = getIdLeitor(leitor2);
+
+        if (comparaIdLeitor(&idLeitor1, &idLeitor2)) {
+          fprintf(f_out, "%s não pode recomendar livros para si mesmo\n",
+                  getNome(leitor1));
+          break;
+        }
+
+        insereLivroLista(livrosRecomendados, livro);
         fprintf(f_out, "%s recomenda \"%s\" para %s\n", getNome(leitor1),
                 getTitulo(livro), getNome(leitor2));
       }
@@ -206,19 +254,32 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
 
           fprintf(f_out, "%s aceita recomendação \"%s\" de %s\n",
                   getNome(leitor1), getTitulo(livro), getNome(leitor2));
+        } else {
+
+          fprintf(f_out,
+                  "%s não possui recomendação do livro ID %d feita por "
+                  "%s\n",
+                  getNome(leitor1), getIdLivro(livro), getNome(leitor2));
         }
       }
       break;
 
     case 5: // REMOVER/REJEITAR RECOMENDACAO
       if (leitor1 && livro && leitor2) {
-        // remove o livro da lista de recomendacoes do LEITOR 1 (leitor1 é  quem
-        // rejeita)
-        removeLivroLista(getListaLivrosRecomendados(leitor1),
-                         getIdLivro(livro));
+        // remove o livro da lista de recomendacoes do LEITOR 1 (leitor1 é
+        // quem rejeita)
+        Livro *remov = removeLivroLista(getListaLivrosRecomendados(leitor1),
+                                        getIdLivro(livro));
 
-        fprintf(f_out, "%s rejeita recomendação \"%s\" de %s\n",
-                getNome(leitor1), getTitulo(livro), getNome(leitor2));
+        if (remov) {
+          fprintf(f_out, "%s rejeita recomendação \"%s\" de %s\n",
+                  getNome(leitor1), getTitulo(livro), getNome(leitor2));
+        } else {
+          fprintf(f_out,
+                  "%s não possui recomendação do livro ID %d feita por "
+                  "%s\n",
+                  getNome(leitor1), getIdLivro(livro), getNome(leitor2));
+        }
       }
       break;
 
@@ -251,15 +312,13 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
 
     case 7: // VERIFICAR CAMINHO DE AFINIDADE
       if (leitor1 && leitor2) {
-        Lista *visitados = criaLista();
-        if (temCaminhoAfinidade(leitor1, leitor2, visitados)) {
+        if (verificaAfinidadeTransitiva(leitor1, leitor2)) {
           fprintf(f_out, "Existe afinidade entre %s e %s\n", getNome(leitor1),
                   getNome(leitor2));
         } else {
           fprintf(f_out, "Nao existe afinidade entre %s e %s\n",
                   getNome(leitor1), getNome(leitor2));
         }
-        liberaLista(visitados, NULL);
       }
       break;
 
