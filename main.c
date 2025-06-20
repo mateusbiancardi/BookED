@@ -1,48 +1,31 @@
-#include "leitor.h"
-#include "livro.h"
+#include <stdio.h>
+#include "funcionalidades.h"
 
 int main() {
+  printf("Iniciando o sistema BookED...\n");
 
-  // const char *nomeArquivo = "livros.txt";
+  Funcionalidades *func = criaFuncionalidades();
 
-  // FILE *arquivo = fopen(nomeArquivo, "r");
+  //pra saber se funcionou os arquivos de leitura de livro e leitor
+  printf("Carregando leitores...\n");
+  leArqLeitores(func, "leitores.txt");
+  printf("Carregando livros...\n");
+  leArqLivros(func, "livros.txt");
 
-  // // Pula a primeira linha do arquivo (o cabeçalho)
-  // char linha_cabecalho[256];
-  // fgets(linha_cabecalho, sizeof(linha_cabecalho), arquivo);
+  //pra saber se funcionou até a rede de afinidades
+  printf("Construindo rede de afinidades...\n");
+  constroiAfinidades(func);
 
-  // while (1) {
-  //   Livro *livro_atual = inicializaLivro();
+  //pra saber se funcionou até gerar as saidas
+  printf("Processando comandos e gerando saida_resultado.txt...\n");
+  ProcessaArqComandos(func, "comandos.txt", "saida_resultado.txt");
 
-  //   int resultado = leLivroDoArquivo(livro_atual, arquivo);
+  //saber se tudo rodou e liberar a memoria
+  printf("Finalizando e liberando memoria...\n");
+  liberaFuncionalidades(func);
 
-  //   if (resultado == 5) {
-  //     imprimeLivro(livro_atual);
-  //   } else {
-  //     liberaLivro(livro_atual);
-  //     break;
-  //   }
-  // }
-
-  char *nomeArquivo = "leitores.txt";
-  FILE *arquivo = fopen(nomeArquivo, "r");
-
-  // Pula a linha de cabeçalho
-  char linha_cabecalho[256];
-  fgets(linha_cabecalho, sizeof(linha_cabecalho), arquivo);
-
-  while (1) {
-    Leitor *leitor_atual = inicializaLeitor();
-
-    int resultado = leLeitorDoArquivo(leitor_atual, arquivo);
-
-    if (resultado > 0) {
-      imprimeLeitor(leitor_atual);
-    } else {
-      liberaLeitor(leitor_atual);
-      break;
-    }
-  }
+  //tudo rodou e acabou
+  printf("Sistema BookED finalizado com sucesso!\n");
 
   return 0;
 }

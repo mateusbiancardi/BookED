@@ -12,9 +12,9 @@
 
 struct livro {
   int id;
-  char titulo[30];
-  char autor[30];
-  char genero[30];
+  char titulo[60];
+  char autor[60];
+  char genero[60];
   int ano;
 };
 
@@ -28,7 +28,7 @@ Livro *inicializaLivro() {
 };
 
 int leLivroDoArquivo(Livro *l, FILE *arquivo) {
-  return fscanf(arquivo, "%d;%29[^;];%29[^;];%29[^;];%d\n", &l->id, l->titulo,
+  return fscanf(arquivo, "%d;%59[^;];%59[^;];%59[^;];%d\n", &l->id, l->titulo,
                 l->autor, l->genero, &l->ano);
 }
 

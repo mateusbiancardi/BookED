@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "funcionalidades.h"
+#include "leitor.h"
 #include "lista.h"
 
 struct funcionalidades {
@@ -56,17 +57,269 @@ void leArqLivros(Funcionalidades *func, const char *path){
         perror("Erro ao abrir livros.txt");
         exit(1);
     }
-
     fscanf(f, "%*[^\n]\n");
 
-    while (!feof(f)) {
-        Livro *l = inicializaLivro();
-        if (leLivroDoArquivo(l, f) == 5) { //fscanf retorna o num de itens lidos
-            insereLivroLista(func->livros, l);
+    Livro *livro = inicializaLivro();
+    while (leLivroDoArquivo(livro, f) == 5) {  //o loop só continua enquanto estiver encontrando os 5 itens (evita quebra do programa)
+
+        //se a leitura funcionou, insere o livro na lista
+        insereLivroLista(func->livros, livro);
+    
+        //preparamos um novo livro em branco para a próxima iteração
+        livro = inicializaLivro();
+    }
+    //pra liberar o ultimo livro em branco que não foi usado
+    liberaLivro(livro);
+
+    fclose(f);
+}
+
+
+void constroiAfinidades(Funcionalidades *func){
+    Celula *cel1 = getPrimeiraCelula(func->leitores);
+    while (cel1 != NULL) {
+        Leitor *leitor1 = (Leitor *)getItemFromCelula(cel1);
+        char **prefs1 = getPreferencias(leitor1);
+        int nPrefs1 = getNPreferencia(leitor1);
+
+        // Começa a comparação a partir do próximo leitor para evitar duplicatas e
+        // auto-comparação
+        Celula *cel2 = getProximaCelula(cel1);
+        while (cel2 != NULL) {
+            Leitor *leitor2 = (Leitor *)getItemFromCelula(cel2);
+            char **prefs2 = getPreferencias(leitor2);
+            int nPrefs2 = getNPreferencia(leitor2);
+
+            // Compara as preferências
+            for (int i = 0; i < nPrefs1; i++) {
+                for (int j = 0; j < nPrefs2; j++) {
+                    if (strcmp(prefs1[i], prefs2[j]) == 0) {
+                        // Adiciona a afinidade em ambas as listas
+                        insereLeitorLista(getListaAfinidades(leitor1), leitor2);
+                        insereLeitorLista(getListaAfinidades(leitor2), leitor1);
+                        goto proximo_par; // Otimização para não adicionar a mesma afinidade varias vezes
+                    }
+                }
+            }
+            proximo_par:
+            cel2 = getProximaCelula(cel2);
         }
-        else {
-            liberaLivro(l);
+        cel1 = getProximaCelula(cel1);
+    }
+}
+
+// Função auxiliar para verificar caminho de afinidade (DFS - Busca em
+// Profundidade)
+static int temCaminhoAfinidade(Leitor *origem, Leitor *destino, Lista *visitados) {
+    if (origem == destino)
+        return 1;
+
+    // Marca como visitado
+    insereLeitorLista(visitados, origem);
+
+    Lista *afinidades = getListaAfinidades(origem);
+    Celula *celulaVizinho = getPrimeiraCelula(afinidades);
+
+    while (celulaVizinho != NULL) {
+        Leitor *vizinho = (Leitor *)getItemFromCelula(celulaVizinho);
+        // Se o vizinho ainda não foi visitado
+        if (!getLeitorListaById(visitados, getIdLeitor(vizinho))) {
+            if (temCaminhoAfinidade(vizinho, destino, visitados)) {
+                return 1;
+            }
         }
+        celulaVizinho = getProximaCelula(celulaVizinho);
+    }
+
+    return 0;
+}
+
+void ProcessaArqComandos(Funcionalidades *func, const char *commands_path, const char *output_path){
+    FILE *f_in = fopen(commands_path, "r");
+    if (!f_in) {
+        perror("Erro ao abrir comandos.txt");
+        exit(1);
+    }
+  
+    FILE *f_out = fopen(output_path, "w");
+    if (!f_out) {
+        perror("Erro ao criar saida_resultado.txt");
+        fclose(f_in);
+        exit(1);
+    }
+
+    int id_func, id1, id2, id3;
+    fscanf(f_in, "%*[^\n]\n"); //le e descarta a primeira linha
+    while (fscanf(f_in, "%d;%d;%d;%d", &id_func, &id1, &id2, &id3) == 4) {
+        Leitor *leitor1 = getLeitorListaById(func->leitores, id1);
+        Livro *livro = getLivroListaById(func->livros, id2);
+        Leitor *leitor2 = getLeitorListaById(func->leitores, id3);
+
+        switch (id_func) {
+        case 1:     //ADICIONAR LIVRO LIDO
+        if (leitor1 && livro) {
+            insereLivroLista(getListaLivrosLidos(leitor1), livro);
+            fprintf(f_out, "%s leu \"%s\"\n", getNome(leitor1), getTitulo(livro));
+        }
+        break;
+
+        case 2:     //ADICIONAR LIVRO DESEJADO
+        if (leitor1 && livro) {
+            insereLivroLista(getListaLivrosDesejados(leitor1), livro);
+            fprintf(f_out, "%s deseja ler \"%s\"\n", getNome(leitor1), getTitulo(livro));
+        }
+        break;
+    
+        case 3:     //RECOMENDAR UM LIVRO
+        if (leitor1 && livro && leitor2) {
+            insereLivroLista(getListaLivrosRecomendados(leitor2), livro);
+            fprintf(f_out, "%s recomenda \"%s\" para %s\n", getNome(leitor1), getTitulo(livro), getNome(leitor2));
+        }
+        break;
+    
+        case 4:     //ACEITAR RECOMENDACAO
+        if (leitor1 && livro && leitor2) {
+            //tenta remover o livro da lista de recomendacoes do LEITOR 1
+            Livro* rec = removeLivroLista(getListaLivrosRecomendados(leitor1), getIdLivro(livro));
+            
+            if (rec) { //se a recomendação existia e foi removida com sucesso, verifica se o livro ta na lista de desejados do leitor 1
+            if (!getLivroListaById(getListaLivrosDesejados(leitor1), getIdLivro(livro))) {
+                //se não tiver, adiciona na lista de DESEJADOS do leitor1
+                insereLivroLista(getListaLivrosDesejados(leitor1), livro);
+            }
+
+            fprintf(f_out, "%s aceita recomendação \"%s\" de %s\n", getNome(leitor1), getTitulo(livro), getNome(leitor2));
+            }
+        }
+        break;
+
+        case 5:     //REMOVER/REJEITAR RECOMENDACAO
+        if (leitor1 && livro && leitor2) {
+            //remove o livro da lista de recomendacoes do LEITOR 1 (leitor1 é  quem rejeita)
+            removeLivroLista(getListaLivrosRecomendados(leitor1), getIdLivro(livro));
+
+            fprintf(f_out, "%s rejeita recomendação \"%s\" de %s\n", getNome(leitor1), getTitulo(livro), getNome(leitor2));
+        }
+        break;
+        
+        case 6: {       //DESCOBRIR LIVROS EM COMUM
+            if (leitor1 && leitor2) {
+                fprintf(f_out, "Livros em comum entre %s e %s: ", getNome(leitor1), getNome(leitor2));
+                Lista* lidos1 = getListaLivrosLidos(leitor1);
+                Lista* lidos2 = getListaLivrosLidos(leitor2);
+                Celula* cel = getPrimeiraCelula(lidos1);
+                int achou = 0;
+                char buffer[1024] = {0}; // Buffer para concatenar os títulos
+                while(cel) {
+                    Livro* livroComum = (Livro*)getItemFromCelula(cel);
+                    if (getLivroListaById(lidos2, getIdLivro(livroComum))) {
+                        if (achou) strcat(buffer, ", ");
+                        strcat(buffer, getTitulo(livroComum));
+                        achou = 1;
+                    }
+                    cel = getProximaCelula(cel);
+                }
+                if (achou) {
+                    fprintf(f_out, "%s\n", buffer);
+                } 
+                else {
+                    fprintf(f_out, "Nenhum livro em comum\n");
+                }
+            }
+        }
+        break;
+
+        case 7:     //VERIFICAR CAMINHO DE AFINIDADE
+        if(leitor1 && leitor2){
+            Lista* visitados = criaLista();
+            if(temCaminhoAfinidade(leitor1, leitor2, visitados)){
+                fprintf(f_out, "Existe afinidade entre %s e %s\n", getNome(leitor1), getNome(leitor2));
+            } 
+            else {
+                fprintf(f_out, "Nao existe afinidade entre %s e %s\n", getNome(leitor1), getNome(leitor2));
+            }
+            liberaLista(visitados, NULL);
+        }
+        break;
+    
+        case 8: {       //IMPRIMIR BOOKED
+        fprintf(f_out, "Imprime toda a BookED\n\n");
+        Celula *celLeitor = getPrimeiraCelula(func->leitores);
+        while (celLeitor) {
+            Leitor *l = (Leitor *)getItemFromCelula(celLeitor);
+            fprintf(f_out, "Leitor: %s\n", getNome(l));
+
+            //imprime lista de livros
+            Celula* celItem;
+            int primeiro;
+
+            fprintf(f_out, "Lidos: ");
+            celItem = getPrimeiraCelula(getListaLivrosLidos(l));
+            primeiro = 1;
+            while(celItem){
+                if(!primeiro) fprintf(f_out, ", ");
+                fprintf(f_out, "%s", getTitulo(getItemFromCelula(celItem)));
+                primeiro = 0;
+                celItem = getProximaCelula(celItem);
+            }
+            fprintf(f_out, "\n");
+        
+            fprintf(f_out, "Desejados: ");
+            celItem = getPrimeiraCelula(getListaLivrosDesejados(l));
+            primeiro = 1;
+            while(celItem){
+                if(!primeiro) fprintf(f_out, ", ");
+                fprintf(f_out, "%s", getTitulo(getItemFromCelula(celItem)));
+                primeiro = 0;
+                celItem = getProximaCelula(celItem);
+            }
+            fprintf(f_out, "\n");
+        
+            fprintf(f_out, "Recomendacoes: ");
+            celItem = getPrimeiraCelula(getListaLivrosRecomendados(l));
+            primeiro = 1;
+            while(celItem){
+                if(!primeiro) fprintf(f_out, ", ");
+                fprintf(f_out, "%s", getTitulo(getItemFromCelula(celItem)));
+                primeiro = 0;
+                celItem = getProximaCelula(celItem);
+            }
+            fprintf(f_out, "\n");
+
+            fprintf(f_out, "Afinidades: ");
+            celItem = getPrimeiraCelula(getListaAfinidades(l));
+            primeiro = 1;
+            while(celItem){
+                if(!primeiro) fprintf(f_out, ", ");
+                fprintf(f_out, "%s", getNome(getItemFromCelula(celItem)));
+                primeiro = 0;
+                celItem = getProximaCelula(celItem);
+            }
+            fprintf(f_out, "\n\n");
+
+            celLeitor = getProximaCelula(celLeitor);
+        } 
+    } 
+    break;
+    }
   }
-  fclose(f);
+
+  fclose(f_in);
+  fclose(f_out);
+}
+
+
+
+// Funções auxiliares para liberar os itens das listas principais
+static void liberaLeitorCallback(void *item) { liberaLeitor((Leitor *)item); }
+static void liberaLivroCallback(void *item) { liberaLivro((Livro *)item); }
+
+void liberaFuncionalidades(Funcionalidades *func){
+    if (!func){
+        return;
+    }
+
+    liberaLista(func->leitores, liberaLeitorCallback);
+    liberaLista(func->livros, liberaLivroCallback);
+    free(func);
 }
