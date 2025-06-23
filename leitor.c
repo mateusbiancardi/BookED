@@ -76,6 +76,10 @@ Leitor *getLeitorListaById(Lista *lista, int id) {
   return (Leitor *)getItemLista(lista, &id, comparaIdLeitor);
 }
 
+int verificaLeitorListaExiste(Lista *l, int id) {
+  return verificaItemListaExiste(l, &id, comparaIdLeitor);
+}
+
 Leitor *removeLeitorLista(Lista *lista, int id) {
   Leitor *leitor = removeItemLista(lista, &id, comparaIdLeitor);
   return leitor;
@@ -124,6 +128,4 @@ void imprimeLeitor(Leitor *l) {
   }
 }
 
-int getNPreferencia(Leitor *l){
-  return l->nPreferencias;
-}
+int getNPreferencia(Leitor *l) { return l->nPreferencias; }

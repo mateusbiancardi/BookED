@@ -54,6 +54,10 @@ Livro *removeLivroLista(Lista *lista, int id) {
   return livro;
 }
 
+int verificaLivroListaExiste(Lista *l, int id) {
+  return verificaItemListaExiste(l, &id, comparaIdLivro);
+}
+
 void insereLivroLista(Lista *lista, Livro *livro) {
   insereItemLista(lista, livro);
 }

@@ -12,7 +12,6 @@
 #include "leitor.h"
 #include "livro.h"
 
-
 typedef struct funcionalidades Funcionalidades;
 
 /**
@@ -49,10 +48,11 @@ void constroiAfinidades(Funcionalidades *func);
  * @param output_path Caminho para o arquivo 'saida.txt' a ser gerado.
  */
 void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
-                             const char *output_path);
+                         const char *output_path);
 
 /**
- * @brief Libera toda a memória alocada pela funcionalidade, incluindo leitores e livros.
+ * @brief Libera toda a memória alocada pela funcionalidade, incluindo leitores
+ * e livros.
  * @param func Ponteiro para a estrutura funcionalidades.
  */
 void liberaFuncionalidades(Funcionalidades *func);

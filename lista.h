@@ -44,6 +44,21 @@ void insereItemLista(Lista *l, void *item);
 void *getItemLista(Lista *l, void *id, int (*c)(void *id, void *item));
 
 /**
+ * @brief Verifica se um item com o identificador especificado existe na lista.
+ *
+ * Esta função percorre a lista e utiliza a função de comparação fornecida
+ * para determinar se um item com o identificador dado existe.
+ *
+ * @param l Ponteiro para a lista a ser pesquisada.
+ * @param id Ponteiro para o identificador a ser buscado.
+ * @param c Função de comparação que recebe o identificador e um item da lista
+ * como argumentos. Deve retornar 1 se o item corresponder ao identificador, 0
+ * caso contrário.
+ * @return int Retorna 1 se o item existe na lista, 0 caso contrário.
+ */
+int verificaItemListaExiste(Lista *l, void *id, int (*c)(void *id, void *item));
+
+/**
  * @brief Remove um item da lista com base em uma chave de busca.
  *
  * A busca é realizada por uma função de comparação fornecida pelo usuário.
@@ -52,10 +67,10 @@ void *getItemLista(Lista *l, void *id, int (*c)(void *id, void *item));
  * @param l Ponteiro para a lista da qual o item será removido.
  * @param id Ponteiro para uma chave de busca a ser passada para a função de
  * comparação.
- * @param c Ponteiro para a função de comparação. A função deve receber a chave
- * (id) e um item da lista, retornando 1 em caso de correspondência.
- * @return O ponteiro (void*) para o item que foi removido, ou NULL se não for
- * encontrado.
+ * @param c Ponteiro para a função de comparação. A função deve receber a
+ * chave (id) e um item da lista, retornando 1 em caso de correspondência.
+ * @return O ponteiro (void*) para o item que foi removido, ou NULL se não
+ * for encontrado.
  */
 void *removeItemLista(Lista *l, void *id, int (*c)(void *id, void *item));
 
