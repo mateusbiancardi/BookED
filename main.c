@@ -1,3 +1,10 @@
+/*
+ *
+ * Arquivo principal 
+ * Autores: Mateus Biancardi e Rafaela Capovilla
+ *
+ */
+
 #include "funcionalidades.h"
 #include <stdio.h>
 
