@@ -10,4 +10,4 @@ id;titulo;autor;genero;ano
 9;Incidente em Antares;Erico Verissimo;Terror;1971
 10;A Grande Arte;Rubem Fonseca;Mistério;1983
 11;Os Sertões;Euclides da Cunha;História;1902
-12;Nós;Lauro Packer;Distopia;2016 
+12;Nós;Lauro Packer;Distopia;2016

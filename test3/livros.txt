@@ -18,4 +18,4 @@ id;titulo;autor;genero;ano
 17;O Senhor dos Anéis;J.R.R. Tolkien;Fantasia;1954
 18;As Aventuras de Tom Sawyer;Mark Twain;Aventura;1876
 19;E Não Sobrou Nenhum;Agatha Christie;Mistério;1939
-20;A Cartomante;Machado de Assis;Romance;1884 
+20;A Cartomante;Machado de Assis;Romance;1884

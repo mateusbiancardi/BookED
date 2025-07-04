@@ -171,7 +171,7 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
     exit(1);
   }
 
-  fscanf(f_in, "%*[^\n]\n"); 
+  fscanf(f_in, "%*[^\n]\n");
 
   int id_func, id1, id2, id3;
   while (fscanf(f_in, "%d;%d;%d;%d", &id_func, &id1, &id2, &id3) == 4) {
@@ -183,16 +183,14 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
     case 1: // ADICIONAR LIVRO LIDO
       if (!leitor1) {
         fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id1);
-      } 
-      else if (!livro) {
+      } else if (!livro) {
         fprintf(f_out, "Erro: Livro com ID %d não encontrado\n", id2);
-      } 
-      else {
+      } else {
         Lista *livrosLidos = getListaLivrosLidos(leitor1);
         if (verificaLivroListaExiste(livrosLidos, getIdLivro(livro))) {
-          fprintf(f_out, "%s já leu \"%s\"\n", getNome(leitor1), getTitulo(livro));
-        } 
-        else {
+          fprintf(f_out, "%s já leu \"%s\"\n", getNome(leitor1),
+                  getTitulo(livro));
+        } else {
           insereLivroLista(livrosLidos, livro);
           fprintf(f_out, "%s leu \"%s\"\n", getNome(leitor1), getTitulo(livro));
         }
@@ -202,105 +200,115 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
     case 2: // ADICIONAR LIVRO DESEJADO
       if (!leitor1) {
         fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id1);
-      } 
-      else if (!livro) {
+      } else if (!livro) {
         fprintf(f_out, "Erro: Livro com ID %d não encontrado\n", id2);
-      } 
-      else {
+      } else {
         Lista *livrosDesejados = getListaLivrosDesejados(leitor1);
         if (verificaLivroListaExiste(livrosDesejados, getIdLivro(livro))) {
-          fprintf(f_out, "%s já deseja ler \"%s\"\n", getNome(leitor1), getTitulo(livro));
-        } 
-        else {
+          fprintf(f_out, "%s já deseja ler \"%s\"\n", getNome(leitor1),
+                  getTitulo(livro));
+        } else {
           insereLivroLista(livrosDesejados, livro);
-          fprintf(f_out, "%s deseja ler \"%s\"\n", getNome(leitor1), getTitulo(livro));
+          fprintf(f_out, "%s deseja ler \"%s\"\n", getNome(leitor1),
+                  getTitulo(livro));
         }
       }
       break;
 
     case 3: // RECOMENDAR UM LIVRO
       if (!leitor1) {
-        fprintf(f_out, "Erro: Leitor recomendador com ID %d não encontrado\n", id1);
-      } 
-      else if (!livro) {
+        fprintf(f_out, "Erro: Leitor recomendador com ID %d não encontrado\n",
+                id1);
+      } else if (!livro) {
         fprintf(f_out, "Erro: Livro com ID %d não encontrado\n", id2);
-      } 
-      else if (!leitor2) {
-        fprintf(f_out, "Erro: Leitor destinatário com ID %d não encontrado\n", id3);
-      } 
-      else {
+      } else if (!leitor2) {
+        fprintf(f_out, "Erro: Leitor destinatário com ID %d não encontrado\n",
+                id3);
+      } else {
         Lista *livrosLidos = getListaLivrosLidos(leitor2);
+        Lista *livrosDesejados = getListaLivrosDesejados(leitor2);
         if (verificaLivroListaExiste(livrosLidos, getIdLivro(livro))) {
-          fprintf(f_out, "%s não precisa da recomendação de \"%s\" pois já leu este livro\n", getNome(leitor2), getTitulo(livro));
-        } 
-        else if (getIdLeitor(leitor1) == getIdLeitor(leitor2)) {
-          fprintf(f_out, "%s não pode recomendar livros para si mesmo\n", getNome(leitor1));
-        } 
-        else {
+          fprintf(f_out,
+                  "%s não precisa da recomendação de \"%s\" pois já leu este "
+                  "livro\n",
+                  getNome(leitor2), getTitulo(livro));
+        } else if (verificaLivroListaExiste(livrosDesejados,
+                                            getIdLivro(livro))) {
+          fprintf(
+              f_out,
+              // Bruno já deseja ler "Dom Casmurro", recomendação desnecessária
+
+              "%s já deseja ler \"%s\", recomendação desnecessária\n",
+              getNome(leitor2), getTitulo(livro));
+        } else if (getIdLeitor(leitor1) == getIdLeitor(leitor2)) {
+          fprintf(f_out, "%s não pode recomendar livros para si mesmo\n",
+                  getNome(leitor1));
+        } else {
           insereLivroLista(getListaLivrosRecomendados(leitor2), livro);
-          fprintf(f_out, "%s recomenda \"%s\" para %s\n", getNome(leitor1), getTitulo(livro), getNome(leitor2));
+          fprintf(f_out, "%s recomenda \"%s\" para %s\n", getNome(leitor1),
+                  getTitulo(livro), getNome(leitor2));
         }
       }
       break;
 
-case 4: // ACEITAR RECOMENDACAO
-    //checar se as pessoas existem
-    if (!leitor1) {
-      fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id1);
-    } 
-    else if (!leitor2) {
-      fprintf(f_out, "Erro: Leitor recomendador com ID %d não encontrado\n", id3);
-    } 
-    else {
-      //se as pessoas existem, TENTAMOS executar a ação de remover a recomendação
-      Livro *rec = removeLivroLista(getListaLivrosRecomendados(leitor1), id2);
+    case 4: // ACEITAR RECOMENDACAO
+      // checar se as pessoas existem
+      if (!leitor1) {
+        fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id1);
+      } else if (!leitor2) {
+        fprintf(f_out, "Erro: Leitor recomendador com ID %d não encontrado\n",
+                id3);
+      } else {
+        // se as pessoas existem, TENTAMOS executar a ação de remover a
+        // recomendação
+        Livro *rec = removeLivroLista(getListaLivrosRecomendados(leitor1), id2);
 
-      if (rec) {
-        //SUCESSO: A recomendação existia e foi removida.
-        if (!getLivroListaById(getListaLivrosDesejados(leitor1), getIdLivro(rec))) {
-          insereLivroLista(getListaLivrosDesejados(leitor1), rec);
+        if (rec) {
+          // SUCESSO: A recomendação existia e foi removida.
+          if (!getLivroListaById(getListaLivrosDesejados(leitor1),
+                                 getIdLivro(rec))) {
+            insereLivroLista(getListaLivrosDesejados(leitor1), rec);
+          }
+          fprintf(f_out, "%s aceita recomendação \"%s\" de %s\n",
+                  getNome(leitor1), getTitulo(rec), getNome(leitor2));
+        } else {
+          // FALHA: A recomendação não foi encontrada na lista do leitor.
+          fprintf(f_out,
+                  "%s não possui recomendação do livro ID %d feita por %s\n",
+                  getNome(leitor1), id2, getNome(leitor2));
         }
-        fprintf(f_out, "%s aceita recomendação \"%s\" de %s\n",
-              getNome(leitor1), getTitulo(rec), getNome(leitor2));
-        } 
-      else {
-        //FALHA: A recomendação não foi encontrada na lista do leitor.
-        fprintf(f_out, "%s não possui recomendação do livro ID %d feita por %s\n",
-              getNome(leitor1), id2, getNome(leitor2));
       }
-    }
-    break;
+      break;
 
-case 5: // REJEITAR RECOMENDACAO
-    if (!leitor1) {
-      fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id1);
-    } 
-    else if (!leitor2) {
-      fprintf(f_out, "Erro: Leitor recomendador com ID %d não encontrado\n", id3);
-    } 
-    else {
-      Livro *remov = removeLivroLista(getListaLivrosRecomendados(leitor1), id2);
+    case 5: // REJEITAR RECOMENDACAO
+      if (!leitor1) {
+        fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id1);
+      } else if (!leitor2) {
+        fprintf(f_out, "Erro: Leitor recomendador com ID %d não encontrado\n",
+                id3);
+      } else {
+        Livro *remov =
+            removeLivroLista(getListaLivrosRecomendados(leitor1), id2);
 
-      if (remov) {
-        fprintf(f_out, "%s rejeita recomendação \"%s\" de %s\n",
-                getNome(leitor1), getTitulo(remov), getNome(leitor2));
-      } 
-      else {
-        fprintf(f_out, "%s não possui recomendação do livro ID %d feita por %s\n",
-                getNome(leitor1), id2, getNome(leitor2));
+        if (remov) {
+          fprintf(f_out, "%s rejeita recomendação \"%s\" de %s\n",
+                  getNome(leitor1), getTitulo(remov), getNome(leitor2));
+        } else {
+          fprintf(f_out,
+                  "%s não possui recomendação do livro ID %d feita por %s\n",
+                  getNome(leitor1), id2, getNome(leitor2));
+        }
       }
-    }
-    break;
+      break;
 
     case 6: // DESCOBRIR LIVROS EM COMUM
       if (!leitor1) {
         fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id1);
-      } 
-      else if (!leitor2) {
+      } else if (!leitor2) {
         fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id3);
-      } 
-      else {
-        fprintf(f_out, "Livros em comum entre %s e %s: ", getNome(leitor1), getNome(leitor2));
+      } else {
+        fprintf(f_out, "Livros em comum entre %s e %s: ", getNome(leitor1),
+                getNome(leitor2));
         Lista *lidos1 = getListaLivrosLidos(leitor1);
         Lista *lidos2 = getListaLivrosLidos(leitor2);
         Celula *cel = getPrimeiraCelula(lidos1);
@@ -309,7 +317,8 @@ case 5: // REJEITAR RECOMENDACAO
         while (cel) {
           Livro *livroComum = (Livro *)getItemFromCelula(cel);
           if (getLivroListaById(lidos2, getIdLivro(livroComum))) {
-            if (achou) strcat(buffer, ", ");
+            if (achou)
+              strcat(buffer, ", ");
             strcat(buffer, getTitulo(livroComum));
             achou = 1;
           }
@@ -317,8 +326,7 @@ case 5: // REJEITAR RECOMENDACAO
         }
         if (achou) {
           fprintf(f_out, "%s\n", buffer);
-        } 
-        else {
+        } else {
           fprintf(f_out, "Nenhum livro em comum\n");
         }
       }
@@ -327,16 +335,15 @@ case 5: // REJEITAR RECOMENDACAO
     case 7: // VERIFICAR CAMINHO DE AFINIDADE
       if (!leitor1) {
         fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id1);
-      } 
-      else if (!leitor2) {
+      } else if (!leitor2) {
         fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id3);
-      } 
-      else {
+      } else {
         if (verificaAfinidadeTransitiva(leitor1, leitor2)) {
-          fprintf(f_out, "Existe afinidade entre %s e %s\n", getNome(leitor1), getNome(leitor2));
-        } 
-        else {
-          fprintf(f_out, "Não existe afinidade entre %s e %s\n", getNome(leitor1), getNome(leitor2));
+          fprintf(f_out, "Existe afinidade entre %s e %s\n", getNome(leitor1),
+                  getNome(leitor2));
+        } else {
+          fprintf(f_out, "Não existe afinidade entre %s e %s\n",
+                  getNome(leitor1), getNome(leitor2));
         }
       }
       break;
@@ -353,11 +360,12 @@ case 5: // REJEITAR RECOMENDACAO
         celItem = getPrimeiraCelula(getListaLivrosLidos(l));
         primeiro = 1;
 
-        while (celItem) { 
-          if (!primeiro) fprintf(f_out, ", "); 
-          fprintf(f_out, "%s", getTitulo(getItemFromCelula(celItem))); 
-          primeiro = 0; 
-          celItem = getProximaCelula(celItem); 
+        while (celItem) {
+          if (!primeiro)
+            fprintf(f_out, ", ");
+          fprintf(f_out, "%s", getTitulo(getItemFromCelula(celItem)));
+          primeiro = 0;
+          celItem = getProximaCelula(celItem);
         }
 
         fprintf(f_out, "\n");
@@ -365,11 +373,12 @@ case 5: // REJEITAR RECOMENDACAO
         celItem = getPrimeiraCelula(getListaLivrosDesejados(l));
         primeiro = 1;
 
-        while (celItem) { 
-          if (!primeiro) fprintf(f_out, ", "); 
-          fprintf(f_out, "%s", getTitulo(getItemFromCelula(celItem))); 
-          primeiro = 0; 
-          celItem = getProximaCelula(celItem); 
+        while (celItem) {
+          if (!primeiro)
+            fprintf(f_out, ", ");
+          fprintf(f_out, "%s", getTitulo(getItemFromCelula(celItem)));
+          primeiro = 0;
+          celItem = getProximaCelula(celItem);
         }
 
         fprintf(f_out, "\n");
@@ -377,11 +386,12 @@ case 5: // REJEITAR RECOMENDACAO
         celItem = getPrimeiraCelula(getListaLivrosRecomendados(l));
         primeiro = 1;
 
-        while (celItem) { 
-          if (!primeiro) fprintf(f_out, ", "); 
-          fprintf(f_out, "%s", getTitulo(getItemFromCelula(celItem))); 
-          primeiro = 0; 
-          celItem = getProximaCelula(celItem); 
+        while (celItem) {
+          if (!primeiro)
+            fprintf(f_out, ", ");
+          fprintf(f_out, "%s", getTitulo(getItemFromCelula(celItem)));
+          primeiro = 0;
+          celItem = getProximaCelula(celItem);
         }
 
         fprintf(f_out, "\n");
@@ -389,13 +399,14 @@ case 5: // REJEITAR RECOMENDACAO
         celItem = getPrimeiraCelula(getListaAfinidades(l));
         primeiro = 1;
 
-        while (celItem) { 
-          if (!primeiro) fprintf(f_out, ", "); 
-          fprintf(f_out, "%s", getNome(getItemFromCelula(celItem))); 
-          primeiro = 0; 
-          celItem = getProximaCelula(celItem); 
+        while (celItem) {
+          if (!primeiro)
+            fprintf(f_out, ", ");
+          fprintf(f_out, "%s", getNome(getItemFromCelula(celItem)));
+          primeiro = 0;
+          celItem = getProximaCelula(celItem);
         }
-        
+
         fprintf(f_out, "\n\n");
         celLeitor = getProximaCelula(celLeitor);
       }
@@ -409,7 +420,7 @@ case 5: // REJEITAR RECOMENDACAO
 
   fclose(f_in);
   fclose(f_out);
-} 
+}
 
 // Funções auxiliares para liberar os itens das listas principais
 static void liberaLeitorCallback(void *item) { liberaLeitor((Leitor *)item); }

@@ -1,0 +1,39 @@
+Alice leu "O Iluminado"
+Alice leu "Garota Exemplar"
+Bob leu "O Nome da Rosa"
+Bob leu "Garota Exemplar"
+Clara leu "Drácula"
+Clara deseja ler "Assassinato no Expresso Oriente"
+Alice deseja ler "Orgulho e Preconceito"
+Bob deseja ler "Drácula"
+Alice recomenda "O Iluminado" para Bob
+Bob recomenda "O Nome da Rosa" para Alice
+Bob recomenda "O Senhor dos Anéis: A Sociedade do Anel" para Clara
+Clara recomenda "A Culpa é das Estrelas" para Bob
+Clara aceita recomendação "O Senhor dos Anéis: A Sociedade do Anel" de Bob
+Alice rejeita recomendação "O Nome da Rosa" de Bob
+Livros em comum entre Alice e Bob: Garota Exemplar
+Livros em comum entre Alice e Clara: Nenhum livro em comum
+Livros em comum entre Bob e Clara: Nenhum livro em comum
+Existe afinidade entre Bob e Clara
+Existe afinidade entre Alice e Clara
+Imprime toda a BookED
+
+Leitor: Alice
+Lidos: O Iluminado, Garota Exemplar
+Desejados: Orgulho e Preconceito
+Recomendacoes: 
+Afinidades: Bob
+
+Leitor: Bob
+Lidos: O Nome da Rosa, Garota Exemplar
+Desejados: Drácula
+Recomendacoes: O Iluminado, A Culpa é das Estrelas
+Afinidades: Alice, Clara
+
+Leitor: Clara
+Lidos: Drácula
+Desejados: Assassinato no Expresso Oriente, O Senhor dos Anéis: A Sociedade do Anel
+Recomendacoes: 
+Afinidades: Bob
+

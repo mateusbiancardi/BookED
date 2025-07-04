@@ -1,4 +1,4 @@
-Id;nome;n_afinidades; afinidades
+Id;nome;n_afinidades;afinidades
 1;Ana;2;Ficção Científica;Tecnologia
 2;Bruno;1;Ficção Científica
 3;Carlos;2;Tecnologia;Ciência
@@ -8,4 +8,4 @@ Id;nome;n_afinidades; afinidades
 7;Gabriel;1;Terror
 8;Helena;2;Terror;Suspense
 9;Igor;1;Suspense
-10;Júlia;1;Biografia 
+10;Júlia;1;Biografia

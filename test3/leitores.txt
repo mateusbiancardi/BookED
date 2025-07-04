@@ -1,4 +1,4 @@
-Id;nome;n_afinidades; afinidades
+Id;nome;n_afinidades;afinidades
 1;Amanda;3;Romance;Drama;História
 2;Bruno;2;Romance;Mistério
 3;Carla;3;Drama;Terror;Biografia
@@ -13,4 +13,4 @@ Id;nome;n_afinidades; afinidades
 12;Leonardo;2;Terror;História
 13;Mariana;3;Mistério;Biografia;Ficção Científica
 14;Nicolas;2;Fantasia;Aventura
-15;Olivia;3;Drama;História;Terror 
+15;Olivia;3;Drama;História;Terror
