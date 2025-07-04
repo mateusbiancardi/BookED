@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 struct leitor {
   int id;
@@ -37,28 +38,62 @@ Leitor *inicializaLeitor() {
   return l;
 };
 
+// Esta é uma função auxiliar para remover espaços do início e do fim de uma string
+static char* trim(char* str) {
+    char* end;
+    // Remove espaços do início
+    while (isspace((unsigned char)*str)) str++;
+    if (*str == 0) return str; // A string é só espaços
+
+    // Remove espaços do fim
+    end = str + strlen(str) - 1;
+    while (end > str && isspace((unsigned char)*end)) end--;
+
+    // Adiciona o novo terminador nulo
+    *(end + 1) = '\0';
+
+    return str;
+}
+
 int leLeitorDoArquivo(Leitor *l, FILE *arquivo) {
-  char buffer_linha[256]; // Buffer para ler o resto da linha
-  int result =
-      fscanf(arquivo, "%d;%99[^;];%d;", &l->id, l->nome, &l->nPreferencias);
+    char linha_inteira[256];
 
-  l->preferencias = malloc(l->nPreferencias * sizeof(char *));
+    // Tenta ler a linha inteira primeiro. Se falhar, é o fim do arquivo.
+    if (fgets(linha_inteira, sizeof(linha_inteira), arquivo) == NULL) {
+        return 0; // Sinaliza o fim da leitura
+    }
 
-  if (fgets(buffer_linha, sizeof(buffer_linha), arquivo) == NULL) {
+    char *token;
+    
+    token = strtok(linha_inteira, ";\n\r");
+    if (token == NULL) return 0;
+    l->id = atoi(token);
 
-    free(l->preferencias);
-    l->preferencias = NULL;
-    return 0;
-  }
-
-  char *token = strtok(buffer_linha, ";\n\r");
-
-  for (int i = 0; i < l->nPreferencias; i++) {
-    l->preferencias[i] = strdup(token);
     token = strtok(NULL, ";\n\r");
-  }
+    if (token == NULL) return 0;
+    strncpy(l->nome, token, MAX_TAM_NOME - 1);
+    l->nome[MAX_TAM_NOME - 1] = '\0';
 
-  return 1;
+    token = strtok(NULL, ";\n\r");
+    if (token == NULL) return 0;
+    l->nPreferencias = atoi(token);
+
+    l->preferencias = malloc(l->nPreferencias * sizeof(char *));
+
+    for (int i = 0; i < l->nPreferencias; i++) {
+        token = strtok(NULL, ";\n\r");
+        if (token != NULL) {
+            //Limpamos o token para remover espaços
+            char* token_limpo = trim(token);
+            //Salvamos a versão limpa
+            l->preferencias[i] = strdup(token_limpo);
+        } else {
+            l->nPreferencias = i;
+            break;
+        }
+    }
+
+    return 1;
 }
 
 int getIdLeitor(Leitor *l) { return l->id; };

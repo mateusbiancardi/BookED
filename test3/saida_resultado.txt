@@ -29,9 +29,9 @@ Leonardo deseja ler "O Tempo e o Vento"
 Mariana deseja ler "O Nome da Rosa"
 Nicolas deseja ler "Robinson Crusoé"
 Olivia deseja ler "O Coruja"
-Amanda recomenda "Dom Casmurro" para Bruno
+Bruno já deseja ler "Dom Casmurro", recomendação desnecessária
 Bruno recomenda "O Nome da Rosa" para Carla
-Carla recomenda "Capitães da Areia" para Henrique
+Henrique já deseja ler "Capitães da Areia", recomendação desnecessária
 Diego recomenda "O Coruja" para Elena
 Elena recomenda "A Droga da Obediência" para Felipe
 Felipe recomenda "O Hobbit" para Gabriela
@@ -44,7 +44,7 @@ Leonardo recomenda "O Guarani" para Mariana
 Mariana recomenda "Admirável Mundo Novo" para Nicolas
 Nicolas recomenda "O Senhor dos Anéis" para Olivia
 Olivia recomenda "Auto da Barca do Inferno" para Amanda
-Bruno aceita recomendação "Dom Casmurro" de Amanda
+Bruno não possui recomendação do livro ID 1 feita por Amanda
 Gabriela não possui recomendação do livro ID 4 feita por Amanda
 Livros em comum entre Amanda e Bruno: Nenhum livro em comum
 Livros em comum entre Carla e Henrique: Nenhum livro em comum
@@ -88,7 +88,7 @@ Leitor: Diego
 Lidos: O Coruja
 Desejados: Admirável Mundo Novo
 Recomendacoes: 
-Afinidades: Carla, Elena, Isabela, João, Leonardo, Mariana
+Afinidades: Carla, Elena, Isabela, João, Leonardo, Mariana, Olivia
 
 Leitor: Elena
 Lidos: A Droga da Obediência
@@ -111,14 +111,14 @@ Afinidades: Amanda, Bruno, Carla, Felipe, Henrique, Karen, Leonardo, Mariana, Ol
 Leitor: Henrique
 Lidos: Vaga Música
 Desejados: Capitães da Areia
-Recomendacoes: Capitães da Areia
+Recomendacoes: 
 Afinidades: Amanda, Carla, Gabriela, Karen, Mariana, Olivia
 
 Leitor: Isabela
 Lidos: E Não Sobrou Nenhum
 Desejados: As Aventuras de Tom Sawyer
 Recomendacoes: Vaga Música
-Afinidades: Bruno, Carla, Diego, Elena, João, Leonardo, Mariana, Nicolas
+Afinidades: Bruno, Carla, Diego, Elena, João, Leonardo, Mariana, Nicolas, Olivia
 
 Leitor: João
 Lidos: Robinson Crusoé
@@ -154,5 +154,5 @@ Leitor: Olivia
 Lidos: Auto da Barca do Inferno
 Desejados: O Coruja
 Recomendacoes: O Senhor dos Anéis
-Afinidades: Amanda, Carla, Felipe, Gabriela, Henrique, Karen, Leonardo
+Afinidades: Amanda, Carla, Diego, Felipe, Gabriela, Henrique, Isabela, Karen, Leonardo
 
