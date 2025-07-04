@@ -10,6 +10,7 @@
 
 #include "lista.h"
 #include <stdio.h>
+
 typedef struct livro Livro;
 
 /**
@@ -134,15 +135,5 @@ void insereLivroLista(Lista *lista, Livro *livro);
  * @param l Ponteiro para a estrutura Livro a ser liberada.
  */
 void liberaLivro(Livro *l);
-
-/**
- * @brief Imprime as informações de um livro.
- *
- * Esta função recebe um ponteiro para uma estrutura Livro e exibe
- * seus dados formatados na saída padrão.
- *
- * @param l Ponteiro para a estrutura Livro a ser impressa.
- */
-void imprimeLivro(Livro *l);
 
 #endif // LIVRO_H_

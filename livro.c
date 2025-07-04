@@ -38,7 +38,6 @@ char *getAutor(Livro *l) { return l->autor; }
 char *getGenero(Livro *l) { return l->genero; }
 int getAno(Livro *l) { return l->ano; }
 
-// Funções envolvendo lista ----------------------------------------------
 int comparaIdLivro(void *idPtr, void *livroPtr) {
   int id = *(int *)idPtr;
   Livro *livro = (Livro *)livroPtr;
@@ -61,17 +60,5 @@ int verificaLivroListaExiste(Lista *l, int id) {
 void insereLivroLista(Lista *lista, Livro *livro) {
   insereItemLista(lista, livro);
 }
-// ------------------------------------------------------------------------
 
 void liberaLivro(Livro *l) { free(l); };
-
-// Função de debug
-void imprimeLivro(Livro *l) {
-  if (l == NULL)
-    return;
-  printf("ID: %d\n", l->id);
-  printf("Titulo: %s\n", l->titulo);
-  printf("Autor: %s\n", l->autor);
-  printf("Genero: %s\n", l->genero);
-  printf("Ano: %d\n", l->ano);
-}

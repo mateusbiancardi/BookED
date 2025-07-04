@@ -126,4 +126,4 @@ Celula *getAnteriorCelula(Celula *c);
  */
 void *getItemFromCelula(Celula *c);
 
-#endif // LISTA_H
+#endif

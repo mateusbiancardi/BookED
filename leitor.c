@@ -19,7 +19,6 @@ struct leitor {
   char **preferencias;
   Lista *livrosLidos;
   Lista *livrosDesejados;
-  // Recomendação recebida
   Lista *livrosRecomendados;
   Lista *afinidades;
 };
@@ -38,18 +37,19 @@ Leitor *inicializaLeitor() {
   return l;
 };
 
-// Esta é uma função auxiliar para remover espaços do início e do fim de uma string
+//funcao auxiliar pra remover espaços do inicio e fim de uma string
 static char* trim(char* str) {
     char* end;
-    // Remove espaços do início
+    //remove espaço do inicio
     while (isspace((unsigned char)*str)) str++;
-    if (*str == 0) return str; // A string é só espaços
 
-    // Remove espaços do fim
+    if (*str == 0) return str; //se a string for so espaços
+
+    //remove espaço do fim
     end = str + strlen(str) - 1;
     while (end > str && isspace((unsigned char)*end)) end--;
 
-    // Adiciona o novo terminador nulo
+    //adiciona nulo pra terminar
     *(end + 1) = '\0';
 
     return str;
@@ -58,9 +58,9 @@ static char* trim(char* str) {
 int leLeitorDoArquivo(Leitor *l, FILE *arquivo) {
     char linha_inteira[256];
 
-    // Tenta ler a linha inteira primeiro. Se falhar, é o fim do arquivo.
+    //primeiro tenta ler a linha inteira, e se falhar é o fim do arquivo
     if (fgets(linha_inteira, sizeof(linha_inteira), arquivo) == NULL) {
-        return 0; // Sinaliza o fim da leitura
+        return 0; //fim da leitura
     }
 
     char *token;
@@ -100,7 +100,6 @@ int getIdLeitor(Leitor *l) { return l->id; };
 char *getNome(Leitor *l) { return l->nome; }
 char **getPreferencias(Leitor *l) { return l->preferencias; }
 
-// Funções envolvendo lista ----------------------------------------------
 int comparaIdLeitor(void *idPtr, void *leitorPtr) {
   int id = *(int *)idPtr;
   Leitor *leitor = (Leitor *)leitorPtr;
@@ -131,7 +130,6 @@ Lista *getListaLivrosDesejados(Leitor *l) { return l->livrosDesejados; };
 Lista *getListaLivrosRecomendados(Leitor *l) { return l->livrosRecomendados; };
 
 Lista *getListaAfinidades(Leitor *l) { return l->afinidades; }
-// ------------------------------------------------------------------------
 
 void liberaLeitor(Leitor *l) {
   if (l == NULL)
@@ -141,26 +139,12 @@ void liberaLeitor(Leitor *l) {
     free(l->preferencias[i]);
   }
   free(l->preferencias);
-  // Passando NULL para não liberar os livros (os livros são liberados em outro
-  // lugar)
+  //passando NULL pra não liberar os livros pq eles vão ser liberados em outro lugar
   liberaLista(l->livrosLidos, NULL);
   liberaLista(l->livrosDesejados, NULL);
   liberaLista(l->livrosRecomendados, NULL);
   liberaLista(l->afinidades, NULL);
   free(l);
 };
-
-// Função de debug
-void imprimeLeitor(Leitor *l) {
-  if (l == NULL)
-    return;
-
-  printf("ID: %d\n", l->id);
-  printf("Nome: %s\n", l->nome);
-  printf("Número de Preferências: %d\n", l->nPreferencias);
-  for (int i = 0; i < l->nPreferencias; i++) {
-    printf("Preferência %d: %s\n", i + 1, l->preferencias[i]);
-  }
-}
 
 int getNPreferencia(Leitor *l) { return l->nPreferencias; }

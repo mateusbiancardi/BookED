@@ -1,7 +1,7 @@
 #include "funcionalidades.h"
 #include <stdio.h>
 
-// Para executar com args: ./main {nome_da_pasta}
+// pra executar com args: ./main {nome_da_pasta}
 int main(int argc, char *argv[]) {
   printf("Iniciando o sistema BookED...\n");
 
@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
   snprintf(path_leitores, sizeof(path_leitores), "%s/leitores.txt", argv[1]);
   snprintf(path_livros, sizeof(path_livros), "%s/livros.txt", argv[1]);
   snprintf(path_comandos, sizeof(path_comandos), "%s/comandos.txt", argv[1]);
-  snprintf(path_saida, sizeof(path_saida), "%s/saida_resultado.txt", argv[1]);
+  snprintf(path_saida, sizeof(path_saida), "%s/saida.txt", argv[1]);
 
   printf("Carregando leitores...\n");
   leArqLeitores(func, path_leitores);
