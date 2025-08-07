@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 struct leitor {
   int id;
@@ -18,7 +19,6 @@ struct leitor {
   char **preferencias;
   Lista *livrosLidos;
   Lista *livrosDesejados;
-  // Recomendação recebida
   Lista *livrosRecomendados;
   Lista *afinidades;
 };
@@ -37,35 +37,69 @@ Leitor *inicializaLeitor() {
   return l;
 };
 
+//funcao auxiliar pra remover espaços do inicio e fim de uma string
+static char* trim(char* str) {
+    char* end;
+    //remove espaço do inicio
+    while (isspace((unsigned char)*str)) str++;
+
+    if (*str == 0) return str; //se a string for so espaços
+
+    //remove espaço do fim
+    end = str + strlen(str) - 1;
+    while (end > str && isspace((unsigned char)*end)) end--;
+
+    //adiciona nulo pra terminar
+    *(end + 1) = '\0';
+
+    return str;
+}
+
 int leLeitorDoArquivo(Leitor *l, FILE *arquivo) {
-  char buffer_linha[256]; // Buffer para ler o resto da linha
-  int result =
-      fscanf(arquivo, "%d;%99[^;];%d;", &l->id, l->nome, &l->nPreferencias);
+    char linha_inteira[256];
 
-  l->preferencias = malloc(l->nPreferencias * sizeof(char *));
+    //primeiro tenta ler a linha inteira, e se falhar é o fim do arquivo
+    if (fgets(linha_inteira, sizeof(linha_inteira), arquivo) == NULL) {
+        return 0; //fim da leitura
+    }
 
-  if (fgets(buffer_linha, sizeof(buffer_linha), arquivo) == NULL) {
+    char *token;
+    
+    token = strtok(linha_inteira, ";\n\r");
+    if (token == NULL) return 0;
+    l->id = atoi(token);
 
-    free(l->preferencias);
-    l->preferencias = NULL;
-    return 0;
-  }
-
-  char *token = strtok(buffer_linha, ";\n\r");
-
-  for (int i = 0; i < l->nPreferencias; i++) {
-    l->preferencias[i] = strdup(token);
     token = strtok(NULL, ";\n\r");
-  }
+    if (token == NULL) return 0;
+    strncpy(l->nome, token, MAX_TAM_NOME - 1);
+    l->nome[MAX_TAM_NOME - 1] = '\0';
 
-  return 1;
+    token = strtok(NULL, ";\n\r");
+    if (token == NULL) return 0;
+    l->nPreferencias = atoi(token);
+
+    l->preferencias = malloc(l->nPreferencias * sizeof(char *));
+
+    for (int i = 0; i < l->nPreferencias; i++) {
+        token = strtok(NULL, ";\n\r");
+        if (token != NULL) {
+            //Limpamos o token para remover espaços
+            char* token_limpo = trim(token);
+            //Salvamos a versão limpa
+            l->preferencias[i] = strdup(token_limpo);
+        } else {
+            l->nPreferencias = i;
+            break;
+        }
+    }
+
+    return 1;
 }
 
 int getIdLeitor(Leitor *l) { return l->id; };
 char *getNome(Leitor *l) { return l->nome; }
 char **getPreferencias(Leitor *l) { return l->preferencias; }
 
-// Funções envolvendo lista ----------------------------------------------
 int comparaIdLeitor(void *idPtr, void *leitorPtr) {
   int id = *(int *)idPtr;
   Leitor *leitor = (Leitor *)leitorPtr;
@@ -96,7 +130,6 @@ Lista *getListaLivrosDesejados(Leitor *l) { return l->livrosDesejados; };
 Lista *getListaLivrosRecomendados(Leitor *l) { return l->livrosRecomendados; };
 
 Lista *getListaAfinidades(Leitor *l) { return l->afinidades; }
-// ------------------------------------------------------------------------
 
 void liberaLeitor(Leitor *l) {
   if (l == NULL)
@@ -106,26 +139,12 @@ void liberaLeitor(Leitor *l) {
     free(l->preferencias[i]);
   }
   free(l->preferencias);
-  // Passando NULL para não liberar os livros (os livros são liberados em outro
-  // lugar)
+  //passando NULL pra não liberar os livros pq eles vão ser liberados em outro lugar
   liberaLista(l->livrosLidos, NULL);
   liberaLista(l->livrosDesejados, NULL);
   liberaLista(l->livrosRecomendados, NULL);
   liberaLista(l->afinidades, NULL);
   free(l);
 };
-
-// Função de debug
-void imprimeLeitor(Leitor *l) {
-  if (l == NULL)
-    return;
-
-  printf("ID: %d\n", l->id);
-  printf("Nome: %s\n", l->nome);
-  printf("Número de Preferências: %d\n", l->nPreferencias);
-  for (int i = 0; i < l->nPreferencias; i++) {
-    printf("Preferência %d: %s\n", i + 1, l->preferencias[i]);
-  }
-}
 
 int getNPreferencia(Leitor *l) { return l->nPreferencias; }

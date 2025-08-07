@@ -47,9 +47,8 @@ void insereItemLista(Lista *l, void *item) {
 void *getItemLista(Lista *l, void *id, int (*c)(void *id, void *item)) {
   Celula *p = l->primeiro;
 
-  // Verifica se o id bate com o id de dentro do item (do livro, por exemplo)
-  // Se c encontrar o item, vai retornar 1; se não encontrar, retorna 0;
-  // por isso a negação de c
+  //verifica se o id bate com o id de dentro do item
+  //se c encontrar o item, vai retornar 1; se não encontrar, retorna 0;
   while (p != NULL && !c(id, p->item)) {
     p = p->prox;
   }
@@ -65,9 +64,6 @@ int verificaItemListaExiste(Lista *l, void *id,
                             int (*c)(void *id, void *item)) {
   Celula *p = l->primeiro;
 
-  // Verifica se o id bate com o id de dentro do item (do livro, por exemplo)
-  // Se c encontrar o item, vai retornar 1; se não encontrar, retorna 0;
-  // por isso a negação de c
   while (p != NULL && !c(id, p->item)) {
     p = p->prox;
   }
@@ -82,9 +78,6 @@ int verificaItemListaExiste(Lista *l, void *id,
 void *removeItemLista(Lista *l, void *id, int (*c)(void *id, void *item)) {
   Celula *p = l->primeiro;
 
-  // Verifica se o id bate com o id de dentro do item (do livro, por exemplo)
-  // Se c encontrar o item, vai retornar 1; se não encontrar, retorna 0;
-  // por isso a negação de c
   while (p != NULL && !c(id, p->item)) {
     p = p->prox;
   }

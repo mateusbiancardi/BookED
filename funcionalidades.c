@@ -34,21 +34,15 @@ void leArqLeitores(Funcionalidades *func, const char *path) {
     exit(1);
   }
 
-  // serve pra ignorar o cabeçalho do arquivo
+  //serve pra ignorar o cabeçalho do arquivo
   fscanf(f, "%*[^\n]\n");
 
-  // enquanto não for o fim do arquivo, le os dados de leitores do arquivo e
-  // adiciona no sistema. A cada rodada do loop, ele aloca memória pra um novo
-  // 'Leitor' e tenta preencher com os dados de uma linha do arquivo. Se a
-  // leitura for bem-sucedida, o leitor preenchido é inserido na lista principal
-  // do sistema. Caso a leitura falhe, a memória alocada para o leitor que não
-  // pode ser utilizado é liberada
   while (!feof(f)) {
     Leitor *l = inicializaLeitor();
     if (leLeitorDoArquivo(l, f)) {
       insereLeitorLista(func->leitores, l);
     } else {
-      liberaLeitor(l); // libera se a leitura falhar
+      liberaLeitor(l); //libera se a leitura falhar
     }
   }
   fclose(f);
@@ -63,17 +57,15 @@ void leArqLivros(Funcionalidades *func, const char *path) {
   fscanf(f, "%*[^\n]\n");
 
   Livro *livro = inicializaLivro();
-  while (leLivroDoArquivo(livro, f) ==
-         5) { // o loop só continua enquanto estiver encontrando os 5 itens
-              // (evita quebra do programa)
+  while (leLivroDoArquivo(livro, f) == 5) { //evita quebra do programa
 
-    // se a leitura funcionou, insere o livro na lista
+    //se a leitura funcionou, insere o livro na lista
     insereLivroLista(func->livros, livro);
 
-    // preparamos um novo livro em branco para a próxima iteração
+    //prepara um novo livro em branco para a proxima iteração
     livro = inicializaLivro();
   }
-  // pra liberar o ultimo livro em branco que não foi usado
+  //pra liberar o ultimo livro em branco que não foi usado
   liberaLivro(livro);
 
   fclose(f);
@@ -101,8 +93,7 @@ void constroiAfinidades(Funcionalidades *func) {
   while (cel1 != NULL) {
     Leitor *leitor1 = (Leitor *)getItemFromCelula(cel1);
 
-    // Começa a comparação a partir do próximo leitor para evitar duplicatas e
-    // auto-comparação
+    //começa a comparação a partir do proximo leitor pra evitar duplicidades
     Celula *cel2 = getProximaCelula(cel1);
 
     while (cel2 != NULL) {
@@ -118,14 +109,12 @@ void constroiAfinidades(Funcionalidades *func) {
   }
 }
 
-// Função auxiliar para verificar caminho de afinidade (DFS - Busca em
-// Profundidade)
+//função auxiliar para verificar caminho de afinidade
 static int temCaminhoAfinidade(Leitor *origem, Leitor *destino,
                                Lista *visitados) {
   if (origem == destino)
     return 1;
 
-  // Marca como visitado
   insereLeitorLista(visitados, origem);
 
   Lista *afinidades = getListaAfinidades(origem);
@@ -133,7 +122,7 @@ static int temCaminhoAfinidade(Leitor *origem, Leitor *destino,
 
   while (celulaVizinho != NULL) {
     Leitor *vizinho = (Leitor *)getItemFromCelula(celulaVizinho);
-    // Se o vizinho ainda não foi visitado
+    //se o vizinho ainda nao foi visitado
     if (!getLeitorListaById(visitados, getIdLeitor(vizinho))) {
       if (temCaminhoAfinidade(vizinho, destino, visitados)) {
         return 1;
@@ -146,10 +135,8 @@ static int temCaminhoAfinidade(Leitor *origem, Leitor *destino,
 }
 
 int verificaAfinidadeTransitiva(Leitor *origem, Leitor *destino) {
-  // Para cada nova verificação, criamos uma lista de "visitados" zerada.
   Lista *visitados = criaLista();
 
-  // Chama a função de busca em profundidade (DFS) já criada.
   int resultado = temCaminhoAfinidade(origem, destino, visitados);
 
   liberaLista(visitados, NULL);
@@ -180,7 +167,7 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
     Leitor *leitor2 = getLeitorListaById(func->leitores, id3);
 
     switch (id_func) {
-    case 1: // ADICIONAR LIVRO LIDO
+    case 1: //ADICIONAR LIVRO LIDO
       if (!leitor1) {
         fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id1);
       } else if (!livro) {
@@ -197,7 +184,7 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
       }
       break;
 
-    case 2: // ADICIONAR LIVRO DESEJADO
+    case 2: //ADICIONAR LIVRO DESEJADO
       if (!leitor1) {
         fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id1);
       } else if (!livro) {
@@ -215,7 +202,7 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
       }
       break;
 
-    case 3: // RECOMENDAR UM LIVRO
+    case 3: //RECOMENDAR UM LIVRO
       if (!leitor1) {
         fprintf(f_out, "Erro: Leitor recomendador com ID %d não encontrado\n",
                 id1);
@@ -236,7 +223,6 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
                                             getIdLivro(livro))) {
           fprintf(
               f_out,
-              // Bruno já deseja ler "Dom Casmurro", recomendação desnecessária
 
               "%s já deseja ler \"%s\", recomendação desnecessária\n",
               getNome(leitor2), getTitulo(livro));
@@ -251,20 +237,19 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
       }
       break;
 
-    case 4: // ACEITAR RECOMENDACAO
-      // checar se as pessoas existem
+    case 4: //ACEITAR RECOMENDACAO
+      //checa se as pessoas existem
       if (!leitor1) {
         fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id1);
       } else if (!leitor2) {
         fprintf(f_out, "Erro: Leitor recomendador com ID %d não encontrado\n",
                 id3);
       } else {
-        // se as pessoas existem, TENTAMOS executar a ação de remover a
-        // recomendação
+        //se as pessoas existem, tentamos executar a ação de remover a recomendação
         Livro *rec = removeLivroLista(getListaLivrosRecomendados(leitor1), id2);
 
         if (rec) {
-          // SUCESSO: A recomendação existia e foi removida.
+          //sucesso
           if (!getLivroListaById(getListaLivrosDesejados(leitor1),
                                  getIdLivro(rec))) {
             insereLivroLista(getListaLivrosDesejados(leitor1), rec);
@@ -272,7 +257,7 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
           fprintf(f_out, "%s aceita recomendação \"%s\" de %s\n",
                   getNome(leitor1), getTitulo(rec), getNome(leitor2));
         } else {
-          // FALHA: A recomendação não foi encontrada na lista do leitor.
+          //falha
           fprintf(f_out,
                   "%s não possui recomendação do livro ID %d feita por %s\n",
                   getNome(leitor1), id2, getNome(leitor2));
@@ -280,7 +265,7 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
       }
       break;
 
-    case 5: // REJEITAR RECOMENDACAO
+    case 5: //REJEITAR RECOMENDACAO
       if (!leitor1) {
         fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id1);
       } else if (!leitor2) {
@@ -301,7 +286,7 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
       }
       break;
 
-    case 6: // DESCOBRIR LIVROS EM COMUM
+    case 6: //DESCOBRIR LIVROS EM COMUM
       if (!leitor1) {
         fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id1);
       } else if (!leitor2) {
@@ -332,7 +317,7 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
       }
       break;
 
-    case 7: // VERIFICAR CAMINHO DE AFINIDADE
+    case 7: //VERIFICAR CAMINHO DE AFINIDADE
       if (!leitor1) {
         fprintf(f_out, "Erro: Leitor com ID %d não encontrado\n", id1);
       } else if (!leitor2) {
@@ -348,7 +333,7 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
       }
       break;
 
-    case 8: // IMPRIMIR BOOKED
+    case 8: //IMPRIMIR BOOKED
       fprintf(f_out, "Imprime toda a BookED\n\n");
       Celula *celLeitor = getPrimeiraCelula(func->leitores);
       while (celLeitor) {
@@ -422,7 +407,7 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
   fclose(f_out);
 }
 
-// Funções auxiliares para liberar os itens das listas principais
+//funções auxiliares para liberar os itens das listas principais
 static void liberaLeitorCallback(void *item) { liberaLeitor((Leitor *)item); }
 static void liberaLivroCallback(void *item) { liberaLivro((Livro *)item); }
 

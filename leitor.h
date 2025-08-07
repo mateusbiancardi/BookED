@@ -10,9 +10,11 @@
 
 #include "lista.h"
 #include <stdio.h>
-typedef struct leitor Leitor;
+
 #define MAX_TAM_NOME 30
 #define MAX_TAM_PREF 30
+
+typedef struct leitor Leitor;
 
 /**
  * @brief Inicializa uma nova estrutura Leitor.
@@ -172,15 +174,5 @@ int getNPreferencia(Leitor *l);
  * @param l Ponteiro para a estrutura Leitor a ser liberada.
  */
 void liberaLeitor(Leitor *l);
-
-/**
- * @brief Imprime as informações de um leitor.
- *
- * Esta função recebe um ponteiro para uma estrutura Leitor e exibe
- * seus dados formatados na saída padrão.
- *
- * @param l Ponteiro para a estrutura Leitor a ser impressa.
- */
-void imprimeLeitor(Leitor *l);
 
 #endif

@@ -57,4 +57,4 @@ void ProcessaArqComandos(Funcionalidades *func, const char *commands_path,
  */
 void liberaFuncionalidades(Funcionalidades *func);
 
-#endif // FUNCIONALIDADES_H_
+#endif
